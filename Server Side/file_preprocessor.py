@@ -1,3 +1,5 @@
+import tempfile
+
 
 class FileView:
     def __init__(self, text_file=None):
@@ -41,6 +43,7 @@ class FileView:
                     elif parts[1] == 'question':
                         state = 'question'
                         question_data['name'] = ' '.join(parts[2:])
+                        question_data['line'] = line_number
                     else:
                         raise ValueError('Unknown macro on line ' +
                                          str(line_number + 1))
@@ -75,6 +78,19 @@ class FileView:
                                      .format(line_number + 1, line))
 
             self.line_datas.append(line_data)
+
+    def frankencompile(self, user_solutions):
+        franken_file = open('temp.txt', mode='w')  # tempfile.TemporaryFile()
+        for line_data in self.line_datas:
+            if line_data['mode'] == 'question':
+                parts = list(filter(None, line_data['text'][2:].split(' ')))
+                if parts[0] == '@@' and \
+                        parts[1] == 'question' and \
+                        ' '.join(parts[2:]) in user_solutions:
+                    franken_file.write(user_solutions[' '.join(parts[2:])])
+            else:
+                franken_file.write(line_data['text'])
+        franken_file.close()
 
     def get_student_view(self):
         for line_data in self.line_datas:

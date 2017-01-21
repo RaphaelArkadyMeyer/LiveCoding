@@ -27,6 +27,8 @@ def main():
                       help='The config file associated with the exam.')
     config_file = vars(args.parse_args())['config file']
 
+    print(testcl_packager.make_testcl_package(config_file))
+
     FileList.package = testcl_packager.make_testcl_package(config_file)
 
     app = Flask(__name__)
@@ -38,3 +40,22 @@ def main():
 
 if __name__ == '__main__':
     main()
+
+
+# import argparse
+# import testcl_packager
+# import file_preprocessor
+
+# args = argparse.ArgumentParser(
+#     description='Prepare a testcl package for students\' exams.')
+# args.add_argument('config file', type=str,
+#                   help='The config file associated with the exam.')
+# config_file = vars(args.parse_args())['config file']
+
+# print(testcl_packager.make_testcl_package(config_file))
+
+# user_solns = {"quicksort_hs": "yooooo i have no clue \nhow\n\tthe\n\t\thell\n\t\t\tHaskell\n\t\t\t\tworks."}
+
+# with open("..\\Examples\\quicksort.hs") as code_file:
+#     file_preprocessor.FileView(code_file).frankencompile(user_solns)
+
