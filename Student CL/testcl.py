@@ -23,7 +23,7 @@ def cli():
 def progress():
     """Demonstrates the progress bar."""
 
-    items = range_type(8000)
+    items = range_type(2000)
 
     def process_slowly(item):
         time.sleep(0.002 * random.random())
@@ -44,7 +44,6 @@ def progress():
 
     score_info = generate_scores('in', 'tests')
     name_length = max(map(lambda x: len(x['name']), score_info))
-    print("Max name length is {}".format(name_length))
     real_score = 0
     max_score = 0
     for index, question_info in enumerate(score_info):
