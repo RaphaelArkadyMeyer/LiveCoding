@@ -84,7 +84,7 @@ class FileView:
         for line_data in self.line_datas:
             if line_data['text'] == 'blank':
                 parts = list(filter(None, line_data['text'][2:].split(' ')))
-                print("PARTS",  parts)
+                print("PARTS", parts)
                 if parts[0] == '@@' and \
                         parts[1] == 'question' and \
                         ' '.join(parts[2:]) in user_solutions:

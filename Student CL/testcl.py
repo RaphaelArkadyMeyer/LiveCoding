@@ -75,6 +75,9 @@ def checkout():
     ip_addr    = click.prompt("Enter IP address and port")
     login_user = click.prompt("Enter User Login")
     login_pass = click.prompt("Enter User Pass", hide_input=True)
+
+
+
     response = communication.get_exam_info(ip_addr, login_user, login_pass)
 
     tests = response['tests']
@@ -83,8 +86,7 @@ def checkout():
     click.echo(tests)
     click.echo(files)
 
-    print('BLAH')
-    put_in_directory(files)
+    # put_in_directory(files)
 
 
 def put_in_directory(file_list, directory=os.getcwd()):

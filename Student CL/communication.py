@@ -6,4 +6,3 @@ def get_exam_info(ip_addr, username, password):
     j = r.json()
     print(j)
     return j
-
