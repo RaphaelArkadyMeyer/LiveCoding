@@ -1,6 +1,6 @@
 
+import requests
 
-def get_exam_info(login):
-    return [{'file_name': 'file1', 'problems': 3},
-            {'file_name': 'file2', 'problems': 2},
-            {'file_name': 'file3', 'problems': 0}]
+def get_exam_info(ip_addr, username, password):
+    r = requests.get(ip_addr, auth=(username, password))
+    return r.json()

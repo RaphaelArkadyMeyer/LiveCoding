@@ -71,8 +71,9 @@ def clear():
 
 @cli.command()
 def checkout():
+    ip_addr    = click.prompt("Enter IP address and port")
     login_user = click.prompt("Enter User Login")
-    file_list = communication.get_exam_info(login_user)
+    file_list = communication.get_exam_info(login_user, ip_addr)
     click.echo("List of Files")
     for index, file_info in enumerate(file_list):
         click.echo("{} | {}".format(index + 1, file_info['file_name']))
