@@ -3,6 +3,7 @@ import click
 import time
 import random
 import communication
+import os
 
 from evaluator import generate_scores
 
@@ -73,15 +74,34 @@ def clear():
 def checkout():
     ip_addr    = click.prompt("Enter IP address and port")
     login_user = click.prompt("Enter User Login")
-    login_pass = click.prompt("Enter User Pass")
-    file_list = communication.get_exam_info(ip_addr, login_user, login_pass)
-    print(type(file_list))
-    click.echo("List of Files")
-    for index, file_name in enumerate(file_list):
-        click.echo("{} | {}".format(index + 1, file_name))
+    login_pass = click.prompt("Enter User Pass", hide_input=True)
+    response = communication.get_exam_info(ip_addr, login_user, login_pass)
+
+    tests = response['tests']
+    files = response['files']
+
+
+    click.echo(tests)
+    click.echo(files)
+
+    print('BLAH')
+    put_in_directory(files)
+
+
+def put_in_directory(file_list, directory=os.getcwd()):
+    for name, value in file_list.items():
+        new_path = os.path.join(directory, name)
+        print('new_path =',new_path)
+        if isinstance(value, dict):
+            os.mkdir(new_path)
+            put_in_directory(new_path, value)
+        elif isinstance(value, str):
+            with open(new_path, mode='w') as new_file:
+                new_file.write(value)
 
 
 @cli.command()
 @click.pass_context
 def turnin(ctx):
     ctx.forward(progress)
+
