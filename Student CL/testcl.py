@@ -23,14 +23,10 @@ def cli():
 def progress():
     """Demonstrates the progress bar."""
 
-    items = range_type(2000)
+    items = range_type(20)
 
     def process_slowly(item):
         time.sleep(0.002 * random.random())
-
-    def show_item(item):
-        if item is not None:
-            return 'Item #%d' % item
 
     def filter(items):
         for item in items:
@@ -47,16 +43,18 @@ def progress():
     real_score = 0
     max_score = 0
     for index, question_info in enumerate(score_info):
-        real_score += question_info['real_score']
-        max_score += question_info['max_score']
-        with click.progressbar(length=question_info['max_score'],
+        real_score += question_info['real_test_score']
+        real_score += question_info['real_question_score']
+        max_score += question_info['max_test_score']
+        max_score += question_info['max_question_score']
+        with click.progressbar(length=question_info['max_test_score'],
                                label=question_info['name'].ljust(
                                    name_length, ' '),
                                show_pos=True,
                                bar_template='%(label)s  %(bar)s | %(info)s',
                                fill_char=click.style(u'█', fg='cyan'),
                                empty_char=' ') as bar:
-            bar.update(question_info['real_score'])
+            bar.update(question_info['real_test_score'])
 
     with click.progressbar(length=max_score,
                            show_pos=True,
