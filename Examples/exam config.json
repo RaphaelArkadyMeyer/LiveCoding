@@ -1,4 +1,5 @@
 {
-	"file_list": ["quicksort.hs", "quicksort.py"],
+	"file_list": ["Examples/quicksort.hs", "Examples/quicksort.py"],
+	"test_list": ["Examples/input1.json"],
 	"name": "The grand quicksort exam"
 }

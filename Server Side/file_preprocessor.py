@@ -64,7 +64,6 @@ class FileView:
                         raise ValueError('Property macro without question' +
                                          ' on line ' + str(line_number + 1))
                     line_data['mode'] = 'copy'
-                    print("AAA", parts[0][1:-1])
                     if parts[0][:-1] == "description":
                         question_data['description'] = ' '.join(parts[1:])
                     if parts[0][:-1] == "points":
@@ -77,10 +76,6 @@ class FileView:
 
             self.line_datas.append(line_data)
 
-            # if 'mode' not in line_data:
-            #     line_data['mode']='normal'
-            # self.lines.append(line_data)
-
     def get_student_view(self):
         for line_data in self.line_datas:
 
@@ -90,7 +85,7 @@ class FileView:
                 yield '\n'
 
 
-def make_student_view(input_file_name):
+def get_student_view_json(input_file_name):
     student_str = ""
     with open(input_file_name) as input_file:
         fv = FileView(input_file)
