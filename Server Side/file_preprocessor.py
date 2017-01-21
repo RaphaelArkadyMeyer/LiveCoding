@@ -82,8 +82,9 @@ class FileView:
     def frankencompile(self, user_solutions):
         franken_file = open('temp.txt', mode='w')  # tempfile.TemporaryFile()
         for line_data in self.line_datas:
-            if line_data['mode'] == 'question':
+            if line_data['text'] == 'blank':
                 parts = list(filter(None, line_data['text'][2:].split(' ')))
+                print("PARTS",  parts)
                 if parts[0] == '@@' and \
                         parts[1] == 'question' and \
                         ' '.join(parts[2:]) in user_solutions:

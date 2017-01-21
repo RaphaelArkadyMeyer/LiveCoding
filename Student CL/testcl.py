@@ -80,7 +80,6 @@ def checkout():
     tests = response['tests']
     files = response['files']
 
-
     click.echo(tests)
     click.echo(files)
 
@@ -91,7 +90,7 @@ def checkout():
 def put_in_directory(file_list, directory=os.getcwd()):
     for name, value in file_list.items():
         new_path = os.path.join(directory, name)
-        print('new_path =',new_path)
+        print('new_path =', new_path)
         if isinstance(value, dict):
             os.mkdir(new_path)
             put_in_directory(new_path, value)
@@ -104,4 +103,3 @@ def put_in_directory(file_list, directory=os.getcwd()):
 @click.pass_context
 def turnin(ctx):
     ctx.forward(progress)
-

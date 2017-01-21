@@ -9,9 +9,9 @@ def make_testcl_package(config_file):
 
     testcl_package = {}
 
-    testcl_file_list = []
+    testcl_file_list = {}
     for file_name in config['file_list']:
-        testcl_file_list.append([file_name, get_student_view_json(file_name)])
+        testcl_file_list[file_name] = get_student_view_json(file_name)
     testcl_package['files'] = testcl_file_list
 
     testcl_test_list = []
