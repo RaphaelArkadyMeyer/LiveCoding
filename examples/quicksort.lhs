@@ -13,7 +13,7 @@
 
 >qsort :: [Int] -> [Int]
 
-@@ begin question quicksort
+@@ begin question quicksort_lhs
 @@ points: 100000
 
 >qsort [] = []
