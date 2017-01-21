@@ -16,14 +16,14 @@ def quickSort(arr):
     pivotList = []
     more = []
     if len(arr) <= 1:
-@@ begin question
+@@ begin question base case
 @@ description: Find the base case
 @@ points: 100
         return arr
 @@ end question
     else:
         pivot = arr[0]
-@@ begin question
+@@ begin question recursion
 @@ points: 500
         for i in arr:
             if i < pivot:
