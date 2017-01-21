@@ -1,7 +1,8 @@
 @@ begin hide
+main :: IO ()
 main = do
 	getLine
-	xs <- getLine >>= return . map read . unwords
+	xs <- getLine >>= return . map read . words
 	print $ qsort xs
 @@ begin hide
 
