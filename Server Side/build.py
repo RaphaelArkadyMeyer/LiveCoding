@@ -7,12 +7,6 @@ from os import system
 from subprocess import Popen
 
 
-
-
-def ask_client_for_file(file_name):
-    return open(file_name)
-
-
 def make_frankenstein(question_names, file_name):
     global server_directory
     global client_directory
@@ -20,7 +14,8 @@ def make_frankenstein(question_names, file_name):
 
 def read_json(file_name):
     with open(file_name) as input_file:
-        return load (input_file)
+        return load(input_file)
+
 
 def run_tests(tests, config):
     file_dict = {}
@@ -29,9 +24,9 @@ def run_tests(tests, config):
         for question_name in f['questions']:
             file_dict[question_name] = file_name
     for test in tests:
-        questions  = test['questions']
-        stdin      = test['input']
-        args       = test['args']
+        questions = test['questions']
+        stdin = test['input']
+        args = test['args']
         files_made = []
         # TODO possibly redundant
         for question in questions:

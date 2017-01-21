@@ -9,8 +9,6 @@ def main():
     print(sort)
 @@ end hide
 
-@@ begin problem
-@@ description: The Classic QuickSort Problem!
 def quickSort(arr):
     less = []
     pivotList = []
@@ -36,9 +34,8 @@ def quickSort(arr):
         less = quickSort(less)
         more = quickSort(more)
         return less + pivotList + more
-@@ end problem
 
 @@ begin hide
 if __name__ == '__main__':
     main()
-@@ begin hide
+@@ end hide

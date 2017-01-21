@@ -8,16 +8,14 @@
 
 @@ end hide
 
-@@ begin problem
-@@ description: Why does anyone like haskell?
 
 >qsort :: [Int] -> [Int]
 
 @@ begin question quicksort_lhs
+@@ description: Why does anyone like haskell?
 @@ points: 100000
 
 >qsort [] = []
 >qsort (x:xs) = qsort [y | y <- xs, y < x] ++ [x] ++ qsort [y | y <- xs, y >= x]
 
 @@ end question
-@@ end problem
