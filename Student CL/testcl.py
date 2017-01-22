@@ -5,6 +5,7 @@ import random
 import communication
 import os
 import json
+import time as thyme # because reasons
 
 from evaluator import generate_scores
 
@@ -28,7 +29,7 @@ def progress():
     items = range_type(20)
 
     def process_slowly(item):
-        time.sleep(0.002 * random.random())
+        thyme.sleep(0.002 * random.random())
 
     def filter(items):
         for item in items:
@@ -84,7 +85,6 @@ def checkout():
     login_pass = ''#click.prompt("Enter User Pass", hide_input=True)
 
     response = communication.get_exam_info('localhost:5000', login_user, login_pass)
-    print('response:',json.dumps(response,indent=4))
 
     tests = response['tests']
     files = response['files']
@@ -93,6 +93,8 @@ def checkout():
     click.echo(tests)
 
     put_in_directory(files)
+    with open('testcases.json', mode='w') as json_file:
+        json_file.write(json.dumps(tests, indent=4, sort_keys=True))
 
     communication.set_session(ip_addr, login_user, token)
 
@@ -100,9 +102,6 @@ def checkout():
 def put_in_directory(file_list, directory=os.getcwd()):
     for name, value in file_list.items():
         new_path = os.path.join(directory, name)
-        print('old path =', directory)
-        print('file     =', name)
-        print('new_path =', new_path)
         if isinstance(value, dict):
             os.mkdirs(new_path, exist_ok=True)
             put_in_directory(value, new_path)

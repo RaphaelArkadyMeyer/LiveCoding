@@ -1,5 +1,5 @@
 
-
+import time
 import requests
 import os
 
@@ -11,7 +11,7 @@ def get_exam_info(ip_addr, username, password):
 
 def set_session(ip_addr, login_user, token):
     with open(os.path.expanduser('~/.testsession'), mode='w') as session:
-        session.writelines([ip_addr, '\n', login_user, '\n', token, '\n', time.time()])
+        session.writelines([ip_addr, '\n', login_user, '\n', token, '\n', str(time.time())])
 
 #[ip_addr, login_user, token, time]
 def get_session():
