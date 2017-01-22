@@ -3,8 +3,10 @@ import click
 import time
 import random
 import communication
+import requests
 import os
-
+import json
+from pprint import pprint
 from evaluator import generate_scores
 
 try:
@@ -76,11 +78,9 @@ def checkout():
     login_user = click.prompt("Enter User Login")
     login_pass = click.prompt("Enter User Pass", hide_input=True)
 
-
-
     response = communication.get_exam_info(ip_addr, login_user, login_pass)
-
-    tests = response['tests']
+    
+    test = response['tests']
     files = response['files']
 
     click.echo(tests)
@@ -105,3 +105,43 @@ def put_in_directory(file_list, directory=os.getcwd()):
 @click.pass_context
 def turnin(ctx):
     ctx.forward(progress)
+
+@cli.command()
+def testCases():
+  """TestCases for each question."""
+  menu = 'testcases'
+  while 1:
+     if menu == 'testcases':
+        click.secho(' Testcases: ', fg='green')        
+        # open json file and put data in dictionary
+        # change path of json after the student server for questions and testcases is craeted 
+        with open(r'\Users\Lena Adel\Documents\LiveCoding\examples\input1.json') as data_file:
+                test_casses = json.load(data_file)
+        # traverse json add list of questions
+        quest_test_dict = {} 
+        for test_case in test_casses:
+             for question in test_case['questions']:
+                if question in quest_test_dict: 
+                    quest_test_dict[question].append(test_case)
+                else: 
+                    quest_test_dict[question] = [test_case]
+        # print out list of question options
+        # list of question optuons
+        quest_dict = {}
+        for index, question in enumerate(quest_test_dict):
+             click.secho("     " + str(index + 1) + '. ' + question, fg='green')
+             quest_dict[index+1] = question
+        option_q =int(input(" Enter question number: "))
+        click.echo("\n")
+        click.clear()
+        click.secho("<<<<<<<<<<<<<<<<< " + quest_dict.get(option_q) + " >>>>>>>>>>>>>>>>>>>\n",fg='green', bold=True)
+        # print out the test casses
+        for index, test_case in enumerate(quest_test_dict.get(quest_dict.get(option_q))): 
+              click.secho("<<<<<<<<<<<<<<<<< " + "TestCase " + str(index + 1) + " >>>>>>>>>>>>>>>>>>>>\n", fg='green', bold=True)
+              click.secho("                Total points: " + str(test_case['points']), bold=True)
+              click.secho(" Input: ", bold=True)    
+              click.echo(" " + test_case['input'] + "\n")
+        
+        menu = 'exit'
+     elif menu == 'exit':
+        return     
