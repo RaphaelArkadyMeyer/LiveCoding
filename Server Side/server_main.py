@@ -96,8 +96,9 @@ if __name__ == '__main__':
     with open(config_file) as config_opened:
         config = json.loads(config_opened.read())
         print("CONFIG", config)
-        user_solns = {"quicksort_hs": "qsort=id", "recursion": "        return arr\n"}
-        evaluate_user_solution(user_solns, config)
+        user_solns = {"quicksort_hs": "qsort=id", "recursion": "        gobbledy gook\n"}
+        score = evaluate_user_solution(user_solns, config)
+        print("SCORE:", score)
         #run_user_solution(user_solns, "python examples/quicksort.py", config, "5\n3 2 5 1 4")    ## user_solns = {"quicksort_hs": "qsort=id"}
     #user_solns = {"recursion": "blueberries"}
 

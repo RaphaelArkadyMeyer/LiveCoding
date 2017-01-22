@@ -1,5 +1,5 @@
 from file_preprocessor import FileView
-from subprocess import Popen
+from subprocess import Popen, PIPE, STDOUT
 import tempfile
 import os
 import json
@@ -34,12 +34,16 @@ def run_user_solution(user_solutions, command, exam_config, stdin_input):
                     franken_interpreter(FileView(code_file),
                                         user_solutions, compiler_input)
         os.chdir(compiler_folder)
-        stdin = stdin_input
-        print("A")
-        (stdout, stderr) = Popen(command, shell=True).communicate(stdin)
-        print("B")
+        p = Popen(command, stdout=PIPE, stdin=PIPE, stderr=STDOUT)
+        try:
+            stdout = p.communicate(input=stdin_input.encode('utf-8'), timeout=10)[0]
+        except TimeoutError:
+            p.kill()
+            stdout = p.communicate()[0]
+        # print(stdout.decode())
+        # (stdout, stderr) = Popen(command, shell=True).communicate(stdin)
         os.chdir(base_dir)
-        return (stdout, stderr)
+        return stdout
 
 
 def evaluate_user_solution(user_solutions, exam_config):
