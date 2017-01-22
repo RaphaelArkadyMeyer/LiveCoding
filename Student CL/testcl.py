@@ -77,9 +77,7 @@ def checkout():
     login_user = ''#click.prompt("Enter User Login")
     login_pass = ''#click.prompt("Enter User Pass", hide_input=True)
 
-
-
-    response = communication.get_exam_info(ip_addr, login_user, login_pass)
+    response = communication.get_exam_info('localhost:5000', login_user, login_pass)
     print('response:',json.dumps(response,indent=4))
 
     tests = response['tests']

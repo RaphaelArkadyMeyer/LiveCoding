@@ -32,7 +32,7 @@ class FileView:
             if line[0:2] == '@@':
                 # Filters is for any empty strings after the split
                 parts = list(filter(None, line[2:].split(' ')))
-
+                line_data['macro'] = True
                 if parts[0] == 'begin':
                     if state != 'copy':
                         raise ValueError('Embeded macro found at line {}.'
@@ -42,6 +42,7 @@ class FileView:
                         line_data['mode'] = 'hide'
                     elif parts[1] == 'question':
                         state = 'question'
+                        line_data['question'] = True
                         question_data['name'] = ' '.join(parts[2:])
                         question_data['line'] = line_number
                     else:
@@ -81,15 +82,17 @@ class FileView:
 
     def frankencompile(self, user_solutions):
         franken_file = open('temp.txt', mode='w')  # tempfile.TemporaryFile()
+        in_question = False
         for line_data in self.line_datas:
-            if line_data['text'] == 'blank':
-                parts = list(filter(None, line_data['text'][2:].split(' ')))
-                print("PARTS", parts)
-                if parts[0] == '@@' and \
-                        parts[1] == 'question' and \
-                        ' '.join(parts[2:]) in user_solutions:
-                    franken_file.write(user_solutions[' '.join(parts[2:])])
-            else:
+            if 'macro' in line_data:
+                if line_data['text'][0:18] == '@@ begin question ' and \
+                        line_data['text'][18:-1] in user_solutions:
+                    in_question = True
+                    franken_file.write(
+                        user_solutions[line_data['text'][18:-1]])
+                if line_data['text'][0:15] == '@@ end question':
+                    in_question = False
+            elif not in_question:
                 franken_file.write(line_data['text'])
         franken_file.close()
 
