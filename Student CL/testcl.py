@@ -25,22 +25,21 @@ def cli():
 
 @cli.command()
 def progress():
-    """Demonstrates the progress bar."""
+    """Get user's progress."""
 
-    items = range_type(20)
+    job_id = communication.start_compile()
+    print(str(job_id.text))
 
-    def process_slowly(item):
-        thyme.sleep(0.002 * random.random())
-
-    def filter(items):
-        for item in items:
-            if random.random() > 0.3:
-                yield item
-
-    with click.progressbar(filter(items), label='Compiling Offline',
+    with click.progressbar([], label='Compiling Offline',
                            fill_char=click.style('#', fg='green')) as bar:
-        for item in bar:
-            process_slowly(item)
+        while True:
+            thyme.sleep(.5)
+            result = communication.try_get_result(0)
+            if result is not None:
+                break
+    click.echo(str(result))
+    return
+
 
     score_info = generate_scores('in', 'tests')
     name_length = max(map(lambda x: len(x['name']), score_info))
@@ -145,7 +144,6 @@ def testCases():
              quest_dict[index+1] = question
         option_q =int(input(" Enter question number: "))
         click.echo("\n")
-        click.clear()
         click.secho("<<<<<<<<<<<<<<<<< " + quest_dict.get(option_q) + " >>>>>>>>>>>>>>>>>>>\n",fg='green', bold=True)
         # print out the test casses
         for index, test_case in enumerate(quest_test_dict.get(quest_dict.get(option_q))): 
@@ -157,3 +155,4 @@ def testCases():
         menu = 'exit'
      elif menu == 'exit':
         return     
+

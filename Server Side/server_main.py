@@ -31,16 +31,17 @@ class TimeRemaining (Resource):
         return str((time.time() - self.start_time)//60)+' minutes have elapsed'
 
 class StartQueue (Resource):
-    parser = reqparse.RequestParser()
-    parser.add_argument('user_solutions', type=dict, help='List of solutions')
     def post(self):
+        parser = reqparse.RequestParser()
+        parser.add_argument('user_solutions', type=dict, help='List of solutions')
         args = parser.parse_args()
         job = {
                 'done': False,
                 'info': args
                 }
-        job_id = job_queue.push()
-        return job_id, 202
+        job_id = len(job_queue)
+        job_queue.append(job)
+        return str(job_id), 202
 
 class GetResult (Resource):
     def get(self, job_id):

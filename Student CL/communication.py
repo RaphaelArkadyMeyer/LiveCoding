@@ -26,17 +26,17 @@ def get_time():
 
 def start_compile():
     ip_addr, login_user, token, time = get_session()
-    r = requests.get('http://' + ip_addr + '/compile')
-    return int(r.text)
+    r = requests.post('http://' + ip_addr + '/compile')
+    return r
 
-def try_get_result():
+def try_get_result( job_id ):
     ip_addr, login_user, token, time = get_session()
-    r = requests.get('http://' + ip_addr + '/compile')
+    r = requests.get('http://' + ip_addr + '/queue/' + str(job_id))
     if r.status_code == 200:
         return r.json()
     elif r.status_code == 302:
         return None
     else:
-        raise hell
+        print ('Unknown error code', r.status_code)
 
 
