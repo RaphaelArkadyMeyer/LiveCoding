@@ -79,7 +79,7 @@ def main():
 
 
 if __name__ == '__main__':
-    # main()
+    main()
 
     from file_preprocessor import FileView
     from frankencompiler import franken_interpreter, run_user_solution, evaluate_user_solution
@@ -99,8 +99,3 @@ if __name__ == '__main__':
         user_solns = {"quicksort_hs": "qsort=id", "recursion": "        gobbledy gook\n"}
         score = evaluate_user_solution(user_solns, config)
         print("SCORE:", score)
-        #run_user_solution(user_solns, "python examples/quicksort.py", config, "5\n3 2 5 1 4")    ## user_solns = {"quicksort_hs": "qsort=id"}
-    #user_solns = {"recursion": "blueberries"}
-
-    #with open("examples/quicksort.py") as code_file:
-    #    file_preprocessor.FileView(code_file).frankencompile(user_solns)
