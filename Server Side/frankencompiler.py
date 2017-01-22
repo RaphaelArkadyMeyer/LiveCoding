@@ -36,7 +36,8 @@ def run_user_solution(user_solutions, command, exam_config, stdin_input):
         os.chdir(compiler_folder)
         p = Popen(command, stdout=PIPE, stdin=PIPE, stderr=STDOUT)
         try:
-            stdout = p.communicate(input=stdin_input.encode('utf-8'), timeout=10)[0]
+            stdout = p.communicate(
+                input=stdin_input.encode('utf-8'), timeout=10)[0]
         except TimeoutError:
             p.kill()
             stdout = p.communicate()[0]
@@ -47,7 +48,9 @@ def run_user_solution(user_solutions, command, exam_config, stdin_input):
 
 
 def evaluate_user_solution(user_solutions, exam_config):
+    message = ""
     score = 0
+    max_score = 0
     for test_file in exam_config['test_list']:
         with open(test_file) as test_config:
             test_cases = json.loads(test_config.read())
@@ -58,12 +61,17 @@ def evaluate_user_solution(user_solutions, exam_config):
                 for key, value in user_solutions.items():
                     if key in test_case['questions']:
                         user_inputs[key] = value
-                actual = run_user_solution(user_inputs, test_case[
-                                           'run'], exam_config,
+                actual = run_user_solution(user_inputs,
+                                           test_case['run'],
+                                           exam_config,
                                            test_case['input'])
+                max_score += test_cases['points']
                 if actual[0] == expected[0]:
+                    message += "Test case passed: +{} Points".format(test_case[
+                                                                     'points'])
                     score += test_case['points']
                 else:
-                    print("Expected:\n", expected[0],
-                          "\n\nActual:\n", actual[0])
-    return score
+                    message += \
+                        "Expected:\n {}".format(expected[0]) + \
+                        "\n\nActual:\n{}".format(actual[0])
+    return [score, max_score, message]
