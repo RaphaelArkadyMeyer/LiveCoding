@@ -41,8 +41,20 @@ def progress():
                            fill_char=click.style('#', fg='green')) as bar:
         for item in bar:
             process_slowly(item)
-
-    score_info = generate_scores('in', 'tests')
+    # get the progress list from an api string passed in and parse the string to store it in the core_info list 
+    with open('progress.json') as data_file:
+                progress = json.loads(data_file.read())
+    score_info = []
+    for question, value in progress.items():
+        score_info.append({
+                           'real_test_score': value["real_test_score"],
+                           'max_test_score': value["max_test_score"],
+                           'name': value["name"],
+                           'real_question_score': value["real_question_score"],
+                           'max_question_score': value["max_question_score"]
+                          })
+        
+        
     name_length = max(map(lambda x: len(x['name']), score_info))
     real_score = 0
     max_score = 0
