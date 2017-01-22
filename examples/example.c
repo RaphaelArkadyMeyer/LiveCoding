@@ -1,8 +1,10 @@
+#include <stdio.h>
+
+void printHello();
+
 @@ begin hide
 int main(int argv, char** argc) {
-
 	printHello();
-
 }
 @@ end hide
 

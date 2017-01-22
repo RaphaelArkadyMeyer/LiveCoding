@@ -2,27 +2,19 @@
 {
 	"questions": ["quicksort_lhs"],
 	"input": "5\n1 2 3 4 5",
-	"run": "python3 quicksort.py",
+	"run": "python examples/quicksort.py",
 	"points": 50
-},
-{
-	"questions": ["quicksort_hs"],
-	"input": "5\n1 2 3 4 5",
-	"run": "runghc quicksort.hs",
-	"points": 10
-},
-{
-	"questions": ["quicksort_hs"],
-	"input": "5\n1 2 -3 4 5",
-	"compile": "ghc quicksort.hs",
-	"run": "quicksort",
-	"clean": "quicksort",
-	"points": 3
 },
 {
 	"questions": ["base case", "recursion"],
 	"input": "5\n1 2 -4 3 5",
-	"run": "python3 quicksort.py",
+	"run": "python examples/quicksort.py",
 	"points": 30
+},
+{
+	"questions": ["printHello"],
+	"input": "",
+	"run": "clang examples/example.c",
+	"points": 20
 }
 ]
