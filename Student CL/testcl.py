@@ -1,3 +1,4 @@
+
 # coding: utf-8
 import click
 import time
@@ -66,6 +67,12 @@ def progress():
 
 
 @cli.command()
+def time():
+    """Returns the amount of time remaining in the session."""
+    click.echo(communication.get_time())
+
+
+@cli.command()
 def clear():
     """Clears the entire screen."""
     click.clear()
@@ -73,6 +80,7 @@ def clear():
 
 @cli.command()
 def checkout():
+    global ip_addr, login_user, login_pass
     ip_addr    = 'localhost:5000'#click.prompt("Enter IP address and port")
     login_user = ''#click.prompt("Enter User Login")
     login_pass = ''#click.prompt("Enter User Pass", hide_input=True)
