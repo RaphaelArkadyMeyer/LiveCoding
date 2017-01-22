@@ -1,5 +1,5 @@
 {
-	"file_list": ["examples/quicksort.hs", "examples/quicksort.py"],
+	"file_list": ["examples/quicksort.hs", "examples/quicksort.py", "examples/example.c", "examples/morse.cpp", "examples/01knapsack.cpp", "examples/fib.S", "examples/guess_number.py"],
 	"test_list": ["examples/input1.json"],
 	"name": "The grand quicksort exam"
 }

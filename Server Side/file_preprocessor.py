@@ -44,7 +44,7 @@ class FileView:
                         question_data['line'] = line_number
                     else:
                         raise ValueError('Unknown macro on line ' +
-                                         str(line_number + 1))
+                                         str(line_number + 1) + ' file '+text_file.name)
 
                 elif parts[0] == 'end':
                     if state == 'copy':
