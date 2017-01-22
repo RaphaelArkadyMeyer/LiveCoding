@@ -14,14 +14,16 @@ from flask_restful import Resource, Api, reqparse
 
 job_queue = []
 
+def random_string(n):
+    return ''.join(random.SystemRandom().choice('0123456789') for _ in range(n))
+
 class FileList(Resource):
     def get(self):
         #with open('tests.json') as tests:
             #json_tests = json.load(tests)
         #print("SENT",json.dumps(self.package, indent=4))
         result = self.package
-        x = ''.join(random.SystemRandom().choice('0123456789') for _ in range(16))
-        result['token'] = x
+        result['token'] = random_string(16)
         return result
 
 class TimeRemaining (Resource):

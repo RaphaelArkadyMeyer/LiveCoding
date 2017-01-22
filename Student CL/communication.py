@@ -17,20 +17,20 @@ def set_session(ip_addr, login_user, token):
 def get_session():
     with open(os.path.expanduser('~/.testsession')) as session:
         result = list(map(lambda x:x.rstrip(), session.readlines()))
-    return result
+    return tuple(result)
 
 def get_time():
-    [ip_addr, login_user, token] = get_session()
+    ip_addr, login_user, token, time = get_session()
     r = requests.get('http://' + ip_addr + '/time')
     return r.text
 
 def start_compile():
-    [ip_addr, login_user, token] = get_session()
+    ip_addr, login_user, token, time = get_session()
     r = requests.get('http://' + ip_addr + '/compile')
     return int(r.text)
 
 def try_get_result():
-    [ip_addr, login_user, token] = get_session()
+    ip_addr, login_user, token, time = get_session()
     r = requests.get('http://' + ip_addr + '/compile')
     if r.status_code == 200:
         return r.json()
