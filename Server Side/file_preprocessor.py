@@ -1,6 +1,3 @@
-import tempfile
-
-
 class FileView:
     def __init__(self, text_file=None):
         # [{text:"code", hidden:false, question=None/"name"}]
@@ -79,22 +76,6 @@ class FileView:
                                      .format(line_number + 1, line))
 
             self.line_datas.append(line_data)
-
-    def frankencompile(self, user_solutions):
-        franken_file = open('temp.txt', mode='w')  # tempfile.TemporaryFile()
-        in_question = False
-        for line_data in self.line_datas:
-            if 'macro' in line_data:
-                if line_data['text'][0:18] == '@@ begin question ' and \
-                        line_data['text'][18:-1] in user_solutions:
-                    in_question = True
-                    franken_file.write(
-                        user_solutions[line_data['text'][18:-1]])
-                if line_data['text'][0:15] == '@@ end question':
-                    in_question = False
-            elif not in_question:
-                franken_file.write(line_data['text'])
-        franken_file.close()
 
     def get_student_view(self):
         for line_data in self.line_datas:

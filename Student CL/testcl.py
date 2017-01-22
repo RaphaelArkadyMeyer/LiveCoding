@@ -1,9 +1,11 @@
+
 # coding: utf-8
 import click
-import time
 import random
 import communication
 import os
+import json
+import time as thyme # because reasons
 
 from evaluator import generate_scores
 
@@ -27,7 +29,7 @@ def progress():
     items = range_type(20)
 
     def process_slowly(item):
-        time.sleep(0.002 * random.random())
+        thyme.sleep(0.002 * random.random())
 
     def filter(items):
         for item in items:
@@ -65,6 +67,12 @@ def progress():
 
 
 @cli.command()
+def time():
+    """Returns the amount of time remaining in the session."""
+    click.echo(communication.get_time())
+
+
+@cli.command()
 def clear():
     """Clears the entire screen."""
     click.clear()
@@ -72,29 +80,33 @@ def clear():
 
 @cli.command()
 def checkout():
-    ip_addr = click.prompt("Enter IP address and port")
-    login_user = click.prompt("Enter User Login")
-    login_pass = click.prompt("Enter User Pass", hide_input=True)
+    ip_addr    = 'localhost:5000'#click.prompt("Enter IP address and port")
+    login_user = ''#click.prompt("Enter User Login")
+    login_pass = ''#click.prompt("Enter User Pass", hide_input=True)
 
-    response = communication.get_exam_info(ip_addr, login_user, login_pass)
+    response = communication.get_exam_info('localhost:5000', login_user, login_pass)
 
     tests = response['tests']
     files = response['files']
+    token = response['token']
 
     click.echo(tests)
-    click.echo(files)
 
-    # put_in_directory(files)
+    put_in_directory(files)
+    with open('testcases.json', mode='w') as json_file:
+        json_file.write(json.dumps(tests, indent=4, sort_keys=True))
+
+    communication.set_session(ip_addr, login_user, token)
 
 
 def put_in_directory(file_list, directory=os.getcwd()):
     for name, value in file_list.items():
         new_path = os.path.join(directory, name)
-        print('new_path =', new_path)
         if isinstance(value, dict):
-            os.mkdir(new_path)
-            put_in_directory(new_path, value)
+            os.mkdirs(new_path, exist_ok=True)
+            put_in_directory(value, new_path)
         elif isinstance(value, str):
+            os.makedirs(os.path.dirname(new_path), exist_ok=True)
             with open(new_path, mode='w') as new_file:
                 new_file.write(value)
 
@@ -103,3 +115,6 @@ def put_in_directory(file_list, directory=os.getcwd()):
 @click.pass_context
 def turnin(ctx):
     ctx.forward(progress)
+
+
+
