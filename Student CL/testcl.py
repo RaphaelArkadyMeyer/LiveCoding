@@ -127,7 +127,7 @@ def testCases():
         click.secho(' Testcases: ', fg='green')        
         # open json file and put data in dictionary
         # change path of json after the student server for questions and testcases is craeted 
-        with open(r'\Users\Lena Adel\Documents\LiveCoding\examples\input1.json') as data_file:
+        with open('testcases.json') as data_file:
                 test_casses = json.load(data_file)
         # traverse json add list of questions
         quest_test_dict = {} 
