@@ -1,6 +1,3 @@
-import tempfile
-
-
 class FileView:
     def __init__(self, text_file=None):
         # [{text:"code", hidden:false, question=None/"name"}]
@@ -32,7 +29,7 @@ class FileView:
             if line[0:2] == '@@':
                 # Filters is for any empty strings after the split
                 parts = list(filter(None, line[2:].split(' ')))
-
+                line_data['macro'] = True
                 if parts[0] == 'begin':
                     if state != 'copy':
                         raise ValueError('Embeded macro found at line {}.'
@@ -42,11 +39,12 @@ class FileView:
                         line_data['mode'] = 'hide'
                     elif parts[1] == 'question':
                         state = 'question'
+                        line_data['question'] = True
                         question_data['name'] = ' '.join(parts[2:])
                         question_data['line'] = line_number
                     else:
                         raise ValueError('Unknown macro on line ' +
-                                         str(line_number + 1))
+                                         str(line_number + 1) + ' file '+text_file.name)
 
                 elif parts[0] == 'end':
                     if state == 'copy':
@@ -78,20 +76,6 @@ class FileView:
                                      .format(line_number + 1, line))
 
             self.line_datas.append(line_data)
-
-    def frankencompile(self, user_solutions):
-        franken_file = open('temp.txt', mode='w')  # tempfile.TemporaryFile()
-        for line_data in self.line_datas:
-            if line_data['text'] == 'blank':
-                parts = list(filter(None, line_data['text'][2:].split(' ')))
-                print("PARTS", parts)
-                if parts[0] == '@@' and \
-                        parts[1] == 'question' and \
-                        ' '.join(parts[2:]) in user_solutions:
-                    franken_file.write(user_solutions[' '.join(parts[2:])])
-            else:
-                franken_file.write(line_data['text'])
-        franken_file.close()
 
     def get_student_view(self):
         for line_data in self.line_datas:
