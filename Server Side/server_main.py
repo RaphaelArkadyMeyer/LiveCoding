@@ -79,7 +79,7 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    # main()
 
     from file_preprocessor import FileView
     from frankencompiler import franken_interpreter, run_user_solution, evaluate_user_solution

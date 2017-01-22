@@ -12,6 +12,18 @@
 	"points": 30
 },
 {
+	"questions": ["recursion"],
+	"input": "5\n1 2 -4 3 5",
+	"run": "python examples/quicksort.py",
+	"points": 3
+},
+{
+	"questions": ["base case"],
+	"input": "5\n1 2 -4 3 5",
+	"run": "python examples/quicksort.py",
+	"points": 2
+},
+{
 	"questions": ["printHello"],
 	"input": "",
 	"run": "clang examples/example.c",
