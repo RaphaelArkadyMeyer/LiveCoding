@@ -79,25 +79,26 @@ def main():
 
 
 if __name__ == '__main__':
-    # main()
+     main()
 
-    from file_preprocessor import FileView
-    from frankencompiler import franken_interpreter, run_user_solution, evaluate_user_solution
-    import tempfile
-    import subprocess
+    #from file_preprocessor import FileView
+    #from frankencompiler import franken_interpreter, run_user_solution, evaluate_user_solution
+    #import tempfile
+    #import subprocess
 
-    args = argparse.ArgumentParser(
-        description='Prepare a testcl package for students\' exams.')
-    args.add_argument('config file', type=str,
-                      help='The config file associated with the exam.')
-    config_file = vars(args.parse_args())['config file']
+    #args = argparse.ArgumentParser(
+       # description='Prepare a testcl package for students\' exams.')
+    #args.add_argument('config file', type=str,
+                     
+		# help='The config file associated with the exam.')
+   # config_file = vars(args.parse_args())['config file']
 
 
-    with open(config_file) as config_opened:
-        config = json.loads(config_opened.read())
-        print("CONFIG", config)
-        user_solns = {"quicksort_hs": "qsort=id", "recursion": "        return arr\n"}
-        evaluate_user_solution(user_solns, config)
+    #with open(config_file) as config_opened:
+       # config = json.loads(config_opened.read())
+       # print("CONFIG", config)
+       # user_solns = {"quicksort_hs": "qsort=id", "recursion": "        return arr\n"}
+       # evaluate_user_solution(user_solns, config)
         #run_user_solution(user_solns, "python examples/quicksort.py", config, "5\n3 2 5 1 4")    ## user_solns = {"quicksort_hs": "qsort=id"}
     #user_solns = {"recursion": "blueberries"}
 
