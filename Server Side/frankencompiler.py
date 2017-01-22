@@ -76,13 +76,22 @@ def evaluate_user_solution(user_solutions, exam_config):
 
                 for quest_name in test_case['questions']:
                     if quest_name not in quest_dict:
-                        quest_dict[quest_name] = [score, test_case['points'],
-                                                  message]
+                        quest_dict[quest_name] = \
+                            {'real_test_score': score,
+                             'max_test_score': test_case['points'],
+                             'name': quest_name,
+                             'real_question_score':
+                             50 if score == test_case['points'] else 0,
+                             'max_question_score': 50,
+                             'message': message
+                             }
                     else:
                         past_data = quest_dict[quest_name]
-                        past_data[0] += score
-                        past_data[1] += test_case['points']
-                        past_data[2] += ("\n\n" + message)
+                        past_data['real_test_score'] += score
+                        past_data['max_test_score'] += test_case['points']
+                        if score != test_case['points']:
+                            past_data['real_question_score'] = 0
+                        past_data['message'] += ('\n\n' + message)
                         quest_dict[quest_name] = past_data
 
     return quest_dict
