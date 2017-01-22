@@ -11,10 +11,8 @@ class FileList(Resource):
     def get(self):
         #with open('tests.json') as tests:
             #json_tests = json.load(tests)
-        return {
-                'files': json.loads(self.package),
-                'tests': None#json.dumps(json_tests)
-                }
+        print("SENT",json.dumps(self.package, indent=4))
+        return json.loads(self.package)
 
 def main():
     #with open('config.json') as config:

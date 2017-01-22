@@ -4,6 +4,7 @@ import time
 import random
 import communication
 import os
+import json
 
 from evaluator import generate_scores
 
@@ -72,31 +73,35 @@ def clear():
 
 @cli.command()
 def checkout():
-    ip_addr    = click.prompt("Enter IP address and port")
-    login_user = click.prompt("Enter User Login")
-    login_pass = click.prompt("Enter User Pass", hide_input=True)
+    ip_addr    = 'localhost:5000'#click.prompt("Enter IP address and port")
+    login_user = ''#click.prompt("Enter User Login")
+    login_pass = ''#click.prompt("Enter User Pass", hide_input=True)
 
 
 
     response = communication.get_exam_info(ip_addr, login_user, login_pass)
+    print('response:',json.dumps(response,indent=4))
 
     tests = response['tests']
     files = response['files']
 
     click.echo(tests)
-    click.echo(files)
+    print('files:',json.dumps(files,indent=4))
 
-    # put_in_directory(files)
+    put_in_directory(files)
 
 
 def put_in_directory(file_list, directory=os.getcwd()):
     for name, value in file_list.items():
         new_path = os.path.join(directory, name)
+        print('old path =', directory)
+        print('file     =', name)
         print('new_path =', new_path)
         if isinstance(value, dict):
-            os.mkdir(new_path)
-            put_in_directory(new_path, value)
+            os.mkdirs(new_path, exist_ok=True)
+            put_in_directory(value, new_path)
         elif isinstance(value, str):
+            os.makedirs(os.path.dirname(new_path), exist_ok=True)
             with open(new_path, mode='w') as new_file:
                 new_file.write(value)
 
