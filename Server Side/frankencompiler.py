@@ -41,37 +41,48 @@ def run_user_solution(user_solutions, command, exam_config, stdin_input):
         except TimeoutError:
             p.kill()
             stdout = p.communicate()[0]
-        # print(stdout.decode())
-        # (stdout, stderr) = Popen(command, shell=True).communicate(stdin)
         os.chdir(base_dir)
         return stdout
 
 
 def evaluate_user_solution(user_solutions, exam_config):
-    message = ""
-    score = 0
-    max_score = 0
+    quest_dict = {}
     for test_file in exam_config['test_list']:
         with open(test_file) as test_config:
             test_cases = json.loads(test_config.read())
             for test_case in test_cases:
                 expected = run_user_solution(
                     {}, test_case['run'], exam_config, test_case['input'])
+
                 user_inputs = {}
                 for key, value in user_solutions.items():
                     if key in test_case['questions']:
                         user_inputs[key] = value
+
                 actual = run_user_solution(user_inputs,
                                            test_case['run'],
                                            exam_config,
                                            test_case['input'])
-                max_score += test_cases['points']
+
                 if actual[0] == expected[0]:
-                    message += "Test case passed: +{} Points".format(test_case[
-                                                                     'points'])
-                    score += test_case['points']
+                    message = "Test case passed: +{} Points".format(test_case[
+                        'points'])
+                    score = test_case['points']
                 else:
-                    message += \
+                    message = \
                         "Expected:\n {}".format(expected[0]) + \
                         "\n\nActual:\n{}".format(actual[0])
-    return [score, max_score, message]
+                    score = 0
+
+                for quest_name in test_case['questions']:
+                    if quest_name not in quest_dict:
+                        quest_dict[quest_name] = [score, test_case['points'],
+                                                  message]
+                    else:
+                        past_data = quest_dict[quest_name]
+                        past_data[0] += score
+                        past_data[1] += test_case['points']
+                        past_data[2] += ("\n\n" + message)
+                        quest_dict[quest_name] = past_data
+
+    return quest_dict
