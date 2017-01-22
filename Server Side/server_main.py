@@ -10,7 +10,9 @@ import os
 import json
 
 from flask import Flask
-from flask_restful import Resource, Api
+from flask_restful import Resource, Api, reqparse
+
+job_queue = []
 
 class FileList(Resource):
     def get(self):
@@ -24,7 +26,27 @@ class FileList(Resource):
 
 class TimeRemaining (Resource):
     def get(self):
-        return str((time.time() - self.start_time)/60)+' minutes elapsed'
+        return str((time.time() - self.start_time)//60)+' minutes have elapsed'
+
+class StartQueue (Resource):
+    parser = reqparse.RequestParser()
+    parser.add_argument('user_solutions', type=dict, help='List of solutions')
+    def post(self):
+        args = parser.parse_args()
+        job = {
+                'done': False,
+                'info': args
+                }
+        job_id = job_queue.push()
+        return job_id, 202
+
+class GetResult (Resource):
+    def get(self, job_id):
+        job = job_queue[job_id]
+        if 'done' in job and job['done'] == True:
+            return job, 200
+        else:
+            return job, 302
 
 
 def main():
@@ -48,6 +70,8 @@ def main():
     api = Api(app)
     api.add_resource(FileList,      '/')
     api.add_resource(TimeRemaining, '/time')
+    api.add_resource(StartQueue,    '/compile')
+    api.add_resource(GetResult,     '/queue/<int:job_id>')
 
     app.run(debug=True)
 

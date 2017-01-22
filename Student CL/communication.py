@@ -24,3 +24,19 @@ def get_time():
     r = requests.get('http://' + ip_addr + '/time')
     return r.text
 
+def start_compile():
+    [ip_addr, login_user, token] = get_session()
+    r = requests.get('http://' + ip_addr + '/compile')
+    return int(r.text)
+
+def try_get_result():
+    [ip_addr, login_user, token] = get_session()
+    r = requests.get('http://' + ip_addr + '/compile')
+    if r.status_code == 200:
+        return r.json()
+    elif r.status_code == 302:
+        return None
+    else:
+        raise hell
+
+
