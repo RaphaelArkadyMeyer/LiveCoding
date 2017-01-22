@@ -20,4 +20,4 @@ def make_testcl_package(config_file):
             testcl_test_list += json.loads(test_file.read())
     testcl_package['tests'] = testcl_test_list
 
-    return(json.dumps(testcl_package))
+    return testcl_package

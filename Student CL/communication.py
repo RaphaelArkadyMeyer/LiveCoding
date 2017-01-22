@@ -1,18 +1,26 @@
 
-import requests
 
-def get_exam_info(ip_addr_, username_, password_):
-    global ip_addr, login_user, login_pass
-    ip_addr  = ip_addr_
-    username = username_
-    password = password_
+import requests
+import os
+
+def get_exam_info(ip_addr, username, password):
     r = requests.get('http://' + ip_addr, auth=(username, password))
+    print(r)
     j = r.json()
-    print(j)
     return j
 
+def set_session(ip_addr, login_user, token):
+    with open(os.path.expanduser('~/.testsession'), mode='w') as session:
+        session.writelines([ip_addr, '\n', login_user, '\n', token, '\n', time.time()])
+
+#[ip_addr, login_user, token, time]
+def get_session():
+    with open(os.path.expanduser('~/.testsession')) as session:
+        result = list(map(lambda x:x.rstrip(), session.readlines()))
+    return result
+
 def get_time():
-    global ip_addr, login_user, login_pass
-    # TODO query dæmon instead
-    r = requests.get('http://' + 'localhost:5000' + '/time')
+    [ip_addr, login_user, token] = get_session()
+    r = requests.get('http://' + ip_addr + '/time')
     return r.text
+

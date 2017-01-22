@@ -1,3 +1,7 @@
+
+import random
+import string
+
 import argparse
 import testcl_packager
 
@@ -13,11 +17,14 @@ class FileList(Resource):
         #with open('tests.json') as tests:
             #json_tests = json.load(tests)
         #print("SENT",json.dumps(self.package, indent=4))
-        return json.loads(self.package)
+        result = self.package
+        x = ''.join(random.SystemRandom().choice('0123456789') for _ in range(16))
+        result['token'] = x
+        return result
 
 class TimeRemaining (Resource):
     def get(self):
-        return str(time.time() - self.start_time)
+        return str((time.time() - self.start_time)/60)+' minutes elapsed'
 
 
 def main():

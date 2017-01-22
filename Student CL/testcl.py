@@ -1,7 +1,6 @@
 
 # coding: utf-8
 import click
-import time
 import random
 import communication
 import os
@@ -80,7 +79,6 @@ def clear():
 
 @cli.command()
 def checkout():
-    global ip_addr, login_user, login_pass
     ip_addr    = 'localhost:5000'#click.prompt("Enter IP address and port")
     login_user = ''#click.prompt("Enter User Login")
     login_pass = ''#click.prompt("Enter User Pass", hide_input=True)
@@ -90,11 +88,13 @@ def checkout():
 
     tests = response['tests']
     files = response['files']
+    token = response['token']
 
     click.echo(tests)
-    print('files:',json.dumps(files,indent=4))
 
     put_in_directory(files)
+
+    communication.set_session(ip_addr, login_user, token)
 
 
 def put_in_directory(file_list, directory=os.getcwd()):
@@ -116,3 +116,6 @@ def put_in_directory(file_list, directory=os.getcwd()):
 @click.pass_context
 def turnin(ctx):
     ctx.forward(progress)
+
+
+
