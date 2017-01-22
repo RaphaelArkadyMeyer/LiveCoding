@@ -25,23 +25,26 @@ def cli():
 
 @cli.command()
 def progress():
-    """Demonstrates the progress bar."""
+    """Get user's progress."""
 
-    items = range_type(20)
+    job_id = communication.start_compile()
+    print(str(job_id.text))
 
-    def process_slowly(item):
-        thyme.sleep(0.002 * random.random())
-
-    def filter(items):
-        for item in items:
-            if random.random() > 0.3:
-                yield item
-
-    with click.progressbar(filter(items), label='Compiling Offline',
+    with click.progressbar([], label='Compiling Offline',
                            fill_char=click.style('#', fg='green')) as bar:
+
         for item in bar:
             process_slowly(item)
-    # get the progress list from an api string passed in and parse the string to store it in the core_info list 
+ #   while True:
+ #           thyme.sleep(.5)
+ #           result = communication.try_get_result(0)
+ #           if result is not None:
+ #               break
+ #   click.echo(str(result))
+ #   return
+
+   
+# get the progress list from an api string passed in and parse the string to store it in the core_info list 
     with open('progress.json') as data_file:
                 progress = json.loads(data_file.read())
     score_info = []
@@ -55,6 +58,8 @@ def progress():
                           })
         
         
+
+     
     name_length = max(map(lambda x: len(x['name']), score_info))
     real_score = 0
     max_score = 0
@@ -157,7 +162,6 @@ def testCases():
              quest_dict[index+1] = question
         option_q =int(input(" Enter question number: "))
         click.echo("\n")
-        click.clear()
         click.secho("<<<<<<<<<<<<<<<<< " + quest_dict.get(option_q) + " >>>>>>>>>>>>>>>>>>>\n",fg='green', bold=True)
         # print out the test casses
         for index, test_case in enumerate(quest_test_dict.get(quest_dict.get(option_q))): 
@@ -169,3 +173,4 @@ def testCases():
         menu = 'exit'
      elif menu == 'exit':
         return     
+
