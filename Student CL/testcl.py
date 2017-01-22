@@ -149,8 +149,8 @@ def testCases():
         for index, test_case in enumerate(quest_test_dict.get(quest_dict.get(option_q))): 
               click.secho("<<<<<<<<<<<<<<<<< " + "TestCase " + str(index + 1) + " >>>>>>>>>>>>>>>>>>>>\n", fg='green', bold=True)
               click.secho("                Total points: " + str(test_case['points']), bold=True)
-              click.secho(" Input: ", bold=True)    
-              click.echo(" " + test_case['input'] + "\n")
+              click.secho("Input: ", bold=True)    
+              click.echo(test_case['input'] + "\n")
         
         menu = 'exit'
      elif menu == 'exit':
